@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -10,6 +11,6 @@ func handler(writer http.ResponseWriter, request *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", handler)
-	http.ListenAndServe("8080", nil)
+	http.HandleFunc("/v1/hello", handler)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
