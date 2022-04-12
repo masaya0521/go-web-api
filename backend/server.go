@@ -15,8 +15,14 @@ func writeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "HelloWorld!")
 }
 
+func redirectHandler(w http.ResponseWriter, request *http.Request) {
+	w.Header().Set("Location", "https://www.goole.com")
+	w.WriteHeader(302)
+}
+
 func main() {
 	http.HandleFunc("/v1/hello", handler)
 	http.HandleFunc("/write", writeHandler)
+	http.HandleFunc("/redirect", redirectHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
