@@ -36,10 +36,27 @@ func jsonHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
+func setCookieHandler(w http.ResponseWriter, r *http.Request) {
+	c1 := http.Cookie{
+		Name:     "first_cookie",
+		Value:    "go test",
+		HttpOnly: true,
+	}
+	c2 := http.Cookie{
+		Name:     "second_cookie",
+		Value:    "go test2",
+		HttpOnly: true,
+	}
+	w.Header().Set("Set-Cookie", c1.String())
+	w.Header().Add("Set-Cookie", c2.String())
+
+}
+
 func main() {
 	http.HandleFunc("/v1/hello", handler)
 	http.HandleFunc("/write", writeHandler)
 	http.HandleFunc("/redirect", redirectHandler)
 	http.HandleFunc("/json", jsonHandler)
+	http.HandleFunc("/cookie", setCookieHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
