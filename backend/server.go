@@ -12,6 +12,12 @@ type Post struct {
 	Thereds []string
 }
 
+type Post2 struct {
+	Id      int
+	Content string
+	Author  string
+}
+
 func handler(writer http.ResponseWriter, request *http.Request) {
 	fmt.Fprintf(writer, "HelloWorld,%s!", request.URL.Path[1:])
 }
@@ -47,9 +53,8 @@ func setCookieHandler(w http.ResponseWriter, r *http.Request) {
 		Value:    "go test2",
 		HttpOnly: true,
 	}
-	w.Header().Set("Set-Cookie", c1.String())
-	w.Header().Add("Set-Cookie", c2.String())
-
+	http.SetCookie(w, &c1)
+	http.SetCookie(w, &c2)
 }
 
 func main() {
