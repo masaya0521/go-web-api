@@ -1,0 +1,13 @@
+{
+    "id" : 1,
+    "content" : "Hello world",
+    "author" : {
+        "id" : 2,
+        "name" : "kaji masaya"
+    },
+    "comments" : {
+        "id" : 3,
+        "content" : "What?",
+        "aurhor" : "Bettey"
+    }
+}
