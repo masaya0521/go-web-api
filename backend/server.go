@@ -22,7 +22,13 @@ type Post2 struct {
 }
 
 func handler(writer http.ResponseWriter, request *http.Request) {
+	fmt.Print("test API")
 	fmt.Fprintf(writer, "HelloWorld,%s!", request.URL.Path[1:])
+}
+
+func headerHandler(w http.ResponseWriter, r *http.Request) {
+	h := r.Header
+	fmt.Fprintln(w, h)
 }
 
 func writeHandler(w http.ResponseWriter, r *http.Request) {
@@ -106,6 +112,7 @@ func main() {
 	http.HandleFunc("/redirect", redirectHandler)
 	http.HandleFunc("/json", jsonHandler)
 	http.HandleFunc("/cookie", setCookieHandler)
+	http.HandleFunc("/header", headerHandler)
 
 	//db
 	post := Post2{Content: "hello", Author: "test man"}
