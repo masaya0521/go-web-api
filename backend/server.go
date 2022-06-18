@@ -106,6 +106,19 @@ func (post *Post2) Create() (err error) {
 	return
 }
 
+func postHandler(w http.ResponseWriter, r *http.Request) {
+	len := r.ContentLength
+	body := make([]byte, len)
+	r.Body.Read(body)
+	var post Post2
+	json.Unmarshal(body, &post)
+	err := post.Create()
+	if err != nil {
+		return
+	}
+	w.WriteHeader(200)
+}
+
 func main() {
 	http.HandleFunc("/v1/hello", handler)
 	http.HandleFunc("/write", writeHandler)
@@ -113,12 +126,13 @@ func main() {
 	http.HandleFunc("/json", jsonHandler)
 	http.HandleFunc("/cookie", setCookieHandler)
 	http.HandleFunc("/header", headerHandler)
+	http.HandleFunc("/post", postHandler)
 
 	//db
-	post := Post2{Content: "hello", Author: "test man"}
-	fmt.Println(post)
-	post.Create()
-	fmt.Println(post)
+	// post := Post2{Content: "hello", Author: "test man"}
+	// fmt.Println(post)
+	// post.Create()
+	// fmt.Println(post)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
