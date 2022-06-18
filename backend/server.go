@@ -22,7 +22,13 @@ type Post2 struct {
 }
 
 func handler(writer http.ResponseWriter, request *http.Request) {
+	fmt.Print("test API")
 	fmt.Fprintf(writer, "HelloWorld,%s!", request.URL.Path[1:])
+}
+
+func headerHandler(w http.ResponseWriter, r *http.Request) {
+	h := r.Header
+	fmt.Fprintln(w, h)
 }
 
 func writeHandler(w http.ResponseWriter, r *http.Request) {
@@ -100,18 +106,33 @@ func (post *Post2) Create() (err error) {
 	return
 }
 
+func postHandler(w http.ResponseWriter, r *http.Request) {
+	len := r.ContentLength
+	body := make([]byte, len)
+	r.Body.Read(body)
+	var post Post2
+	json.Unmarshal(body, &post)
+	err := post.Create()
+	if err != nil {
+		return
+	}
+	w.WriteHeader(200)
+}
+
 func main() {
 	http.HandleFunc("/v1/hello", handler)
 	http.HandleFunc("/write", writeHandler)
 	http.HandleFunc("/redirect", redirectHandler)
 	http.HandleFunc("/json", jsonHandler)
 	http.HandleFunc("/cookie", setCookieHandler)
+	http.HandleFunc("/header", headerHandler)
+	http.HandleFunc("/post", postHandler)
 
 	//db
-	post := Post2{Content: "hello", Author: "test man"}
-	fmt.Println(post)
-	post.Create()
-	fmt.Println(post)
+	// post := Post2{Content: "hello", Author: "test man"}
+	// fmt.Println(post)
+	// post.Create()
+	// fmt.Println(post)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
