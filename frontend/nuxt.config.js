@@ -4,7 +4,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'frontend',
+    title: 'ToDo',
     htmlAttrs: {
       lang: 'en',
     },
@@ -38,6 +38,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/tailwindcss',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -52,7 +53,7 @@ export default {
   proxy: {
     '/api/': {
       target: 'http://localhost:8080',
-      pathRewrite: {'^/api/': '/'}
+      pathRewrite: { '^/api/': '/' },
     },
-  }
-}
+  },
+};
