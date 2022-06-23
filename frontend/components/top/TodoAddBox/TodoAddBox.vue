@@ -1,12 +1,17 @@
 <template>
   <div class="flex flex-row">
     <input
-      v-model="inputText"
+      v-model="post.content"
       type="text"
       class="shadow h-10 w-48 px-4 py-2 m-2"
       placeholder=" ToDoの入力"
     />
-    <button class="shadow text-gray-800 h-10 w-16 px-4 py-2 m-2">Add</button>
+    <button
+      class="shadow text-gray-800 h-10 w-16 px-4 py-2 m-2"
+      @click="postTodo()"
+    >
+      Add
+    </button>
   </div>
 </template>
 
@@ -14,15 +19,26 @@
 import Vue from 'vue';
 
 interface Data {
-  inputText: string;
+  post: {
+    content: string;
+    author: string;
+  };
 }
 
 export default Vue.extend({
   name: 'InputBox',
   data(): Data {
     return {
-      inputText: '',
+      post: {
+        content: '',
+        author: 'koshio',
+      },
     };
+  },
+  methods: {
+    async postTodo(): Promise<void> {
+      await this.$axios.post('api/post', this.post);
+    },
   },
 });
 </script>
