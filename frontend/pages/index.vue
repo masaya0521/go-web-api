@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import ToDo from '~/components/ToDo/index.vue';
+import ToDo from '~/components/top/index.vue';
 
 export default Vue.extend({
   name: 'IndexPage',
