@@ -77,8 +77,8 @@ func init() {
 }
 
 //参照
-func Posts(limit int) (posts []Post2, err error) {
-	rows, err := db.Query("select id, content, author from posts limit $1", limit)
+func Posts() (posts []Post2, err error) {
+	rows, err := db.Query("select id, content, author from posts")
 	if err != nil {
 		return
 	}
@@ -93,6 +93,18 @@ func Posts(limit int) (posts []Post2, err error) {
 	rows.Close()
 	return
 }
+
+func getTodoHandler(w http.ResponseWriter, r *http.Request) {
+	body, err := Posts()
+	if err != nil {
+		return
+	}
+	var post Post2
+	json.Unmarshal(body, &post)
+	json := make([]byte, 1)
+	w.Write([]byte(body))
+}
+
 
 //新規投稿
 func (post *Post2) Create() (err error) {
@@ -127,12 +139,15 @@ func main() {
 	http.HandleFunc("/cookie", setCookieHandler)
 	http.HandleFunc("/header", headerHandler)
 	http.HandleFunc("/post", postHandler)
+	
 
 	//db
 	// post := Post2{Content: "hello", Author: "test man"}
 	// fmt.Println(post)
 	// post.Create()
 	// fmt.Println(post)
+
+	fmt.Println(Posts())
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
